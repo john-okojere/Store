@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main %}
+<link rel="stylesheet" href="{% static 'home/css/cart_view.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.update-quantity-form').on('submit', function(event){
+            event.preventDefault();
+            var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+            var formData = $(this).serialize();
+            formData += '&csrfmiddlewaretoken=' + csrfToken;
+            var url = $(this).attr('action');
+            var tableRow = $(this).closest('tr'); // Get the table row containing the form
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                success: function(response){
+                    alert('Quantity updated successfully!');
+                    // Update quantity and subtotal in the table row
+                    tableRow.find('.quantity').text(response.quantity);
+                    tableRow.find('.subtotal').text('&#8358;' + response.subtotal.toFixed(2));
+                    // Update the total
+                    $('#total').text('&#8358;' + response.total.toFixed(2));
+                },
+                error: function(response){
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        });
+    });
+</script>
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Update Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cart_item in cart_items %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td><img src="{{cart_item.product.image.url}}" style="width: 50px;" alt=""></td>
+                <td><a href="{% url 'details' cart_item.product.uid %}">{{ cart_item.product.name }}</a></td>
+                <td>&#8358;{{ cart_item.product.price }}</td>
+                <td class="quantity">{{ cart_item.product.size }}</td>
+                <td class="quantity">{{ cart_item.quantity }}</td>
+                <td class="subtotal">&#8358;{{ cart_item.subtotal }}</td>
+                <td>
+                    <form class="update-quantity-form" method="post" action="{% url 'update_cart_item' cart_item.uid %}">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" value="{{ cart_item.quantity }}" min="1" required>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="6"><strong>Total:</strong></td>
+                <td id="total" colspan="6">&#8358;{{ total }}</td>  <!-- Display the overall total price of the cart -->
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<a href="{% url 'initiate_payment' %}" class="btn">Checkout</a>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div>
+        <div class="bank-details">
+            <h3>Bank Transfer Details</h3>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Account Name:</th>
+                        <td>{{ bank_details.account_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Account Number:</th>
+                        <td>{{ bank_details.account_number }}</td>
+                    </tr>
+                    <tr>
+                        <th>Bank Name:</th>
+                        <td>{{ bank_details.bank_name }}</td>
+                    </tr>
+                   
+                </tbody>
+            </table>
+          </div>
+          <hr>
+          <form action="">
+            <div>
+                <label for="paid">Have you made the Transfer?</label>
+                <input type="checkbox" name="paid" id="paid"> 
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.querySelector(".open-modal-btn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+function openModal() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+function closeModal() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+  </script>
+
+  
+{% endblock main %}

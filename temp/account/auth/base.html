@@ -1,0 +1,65 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>:: Layers of truth | Sign In</title>
+    <!-- project css file  -->
+    <link rel="stylesheet" href="{% static 'assets/css/my-task.style.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <style>
+        .phone{
+                display: none;
+            }
+        @media screen and (max-width:960px) {
+            .phone{
+                display: block;
+            }
+            .main{
+                display: flex;
+                align-items: center;
+            }
+        }
+        @media screen and (min-width:960px) {
+            .phone{
+                display: none;
+            }
+        }
+        .form-text{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="mytask-layout" class="theme-indigo">
+
+    <!-- main body area -->
+    <div class="main p-2 py-3 p-xl-5 ">
+        
+        <!-- Body: Body -->
+        {% block main %}
+        
+        {% endblock main %}
+    </div>
+</div>
+
+<!-- Jquery Core Js -->
+<script src="{% static 'assets/bundles/libscripts.bundle.js' %}"></script>
+<script>
+    function addClassesToFormFields() {
+        var form = document.getElementById("myForm");
+        var fields = form.querySelectorAll("input, select, textarea");  // Select all input, select, and textarea elements within the form
+
+        for (var i = 0; i < fields.length; i++) {
+            fields[i].classList.add("form-control");
+            fields[i].classList.add("form-control-lg");
+        }
+    }
+    addClassesToFormFields()
+</script>
+</body>

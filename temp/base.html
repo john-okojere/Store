@@ -1,0 +1,392 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block meta %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOT Store - Layers of Truth Church</title>
+    <meta name="description" content="Explore a wide range of products at LOT Store, the official online store of Layers of Truth Church. Shop for books, merchandise, and more.">
+    <meta name="keywords" content="LOT Store, Layers of Truth Church, religious books, merchandise, online store">
+    <meta name="author" content="Layers of Truth Church">
+    <meta property="og:title" content="LOT Store - Layers of Truth Church">
+    <meta property="og:description" content="Explore a wide range of products at LOT Store, the official online store of Layers of Truth Church. Shop for books, merchandise, and more.">
+    <meta property="og:image" content="{% static 'home/img/logo/4.png' %}">
+    <meta property="og:url" content="https://store.layersoftruth.org">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="{% static 'home/img/logo/4.png' %}">
+    <meta name="twitter:title" content="LOT Store - Layers of Truth Church">
+    <meta name="twitter:description" content="Explore a wide range of products at LOT Store, the official online store of Layers of Truth Church. Shop for books, merchandise, and more.">
+    <meta name="twitter:image" content="{% static 'home/img/logo/4.png' %}">
+    
+    {% endblock meta %}
+    <link rel="shortcut icon" href="{% static 'home/img/logo/4.png' %}" type="image/x-icon">
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/my-task.style.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'home/css/shelf.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+    <script
+      src="https://kit.fontawesome.com/7559e3d310.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .search-info{
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">
+        <a href="/"><img src="{% static 'home/img/logo/3.png' %}" alt="" style="width: 100px;"></a>
+      </div>
+      <div class="search">
+        <form action="{% url 'search' %}" method="get">
+          <input type="text" name="item" id="search_item" placeholder="Search..." />
+          <button type="submit" id="search_submit">
+            <i class="fa fa-search"></i>
+          </button>
+          <ul id="search-suggestions"></ul>
+        </form>
+      </div>
+      <div class="menus_bar">
+        <a class="menu-toggle">
+          <i class="fa fa-bars" style="font-size: 24px;"></i>
+          <i class="fa fa-times" style="font-size: 24px; display: none;"></i>
+        </a>
+      </div>
+      <div class="items">
+
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="{% url 'about' %}">About Us</a></li>
+          <li><a href="{% url 'contact' %}">Contact Us</a></li>
+          {% if user.is_authenticated %}
+          <li>
+            <a href="{% url 'view_cart' %}">Cart <i class="fa fa-shopping-cart"></i></a>
+          </li>
+          {% endif %}
+          <li>
+            <div style="display: flex; gap: 0.5rem; cursor: pointer;">
+              <span>NGN</span>
+              <img src="{% static 'home/img/download.png' %}" alt="Nigeria Flag" style="width: 30px;">
+            </div>
+          </li>
+          
+          {% if user.is_authenticated %}
+          <li class="dropdown" id="accountDropdown">
+            <a class="btn" style="display: flex;gap: 0.5rem;align-items: center;"><span>Account</span> <span><i class="fa fa-angle-down"></i></span></a>
+            <div class="dropdown-content" id="accountDropdownContent">
+              <a href="{% url 'profile' user.uid %}">Profile</a>
+              <a href="{% url 'logout' %}">Logout</a>
+              {% if user.is_staff %}
+              <a href="{% url 'add-product' %}">Add Product</a>
+              {% endif %}
+            </div>
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'login' %}">Login</a> |
+            <a href="{% url 'register' %}">Sign Up</a> 
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+    <script>
+      // JavaScript to handle dropdown functionality
+document.addEventListener("DOMContentLoaded", function() {
+  var accountDropdown = document.getElementById("accountDropdown");
+  var accountDropdownContent = document.getElementById("accountDropdownContent");
+
+  // Show dropdown content when hovering over the dropdown
+  accountDropdown.addEventListener("mouseenter", function() {
+    accountDropdownContent.style.display = "block";
+  });
+
+  // Hide dropdown content when mouse leaves the dropdown
+  accountDropdown.addEventListener("mouseleave", function() {
+    accountDropdownContent.style.display = "none";
+  });
+});
+
+    </script>
+    <!-- <hr> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script>
+        $('#search_submit').hide()
+        $(document).ready(function () {
+            $('#search_item').on('input', function () {
+                var inputText = $(this).val();
+                if (inputText.length > 0) {
+                  $('#search_submit').show();
+                  $.ajax({
+                    url: "{% url 'search_suggestions' %}",
+                    data: {
+                        'item': inputText
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        var suggestions = data.suggestions;
+                        var suggestionList = $('#search-suggestions');
+                        suggestionList.empty();
+                        suggestions.forEach(function (suggestion) {
+                          suggestions.forEach(function (product) {
+                            var html = '<li style="display: flex;justify-content: space-between;align-items: center;">';
+                            html += '<img src="' + product.image + '" style="width: 70px;" alt="">';
+                            html += '<div class="search-info">';
+                            html += '<h5>' + product.name + '</h5>';
+                            html += '<p>' + product.size + ' - &#8358;' + product.price + '</p>';
+                            html += '</div>';
+                            html += '<div>';
+                            html += '<a href="/details/' + product.details_url + '"><i class="fa fa-eye"></i></a>';
+                            html += '</div>';
+                            html += '</li>';
+                            // Append the HTML to the suggestion list
+                            suggestionList.append(html);
+                        });
+                        });
+                    }
+                });
+                }else{
+                  $('#search_submit').hide()
+                  $('#search-suggestions').empty();
+                }
+            });
+        });
+
+    function adjustNavMargin() {
+      const  mainbody = document.getElementById("main-body")
+      const  aside = document.getElementById("aside")
+      var navHeight = document.querySelector('nav').offsetHeight;
+      mainbody.style.paddingTop = navHeight + 'px';
+      aside.style.paddingTop = navHeight + 'px';
+  }
+
+  window.addEventListener('load', adjustNavMargin);
+  window.addEventListener('resize', adjustNavMargin);
+    </script>
+    <br />
+    <div class="main-body" id="main-body">
+      <aside class="side-menu" id="aside">
+        <div>
+          <h3>Filter</h3>
+          <hr />
+          <form
+            class="filter filter-options"
+            method="POST"
+            action="{% url 'filter_items' %}"
+          >
+            {% csrf_token %}
+            <select id="category-filter" name="category-filter">
+              <option value="0" {% if category_id ==  0 %} selected {% endif %}>Category</option>
+              {% for cat in category %}
+              <option value="{{ cat.id }}" {% if category_id == cat.id %} selected {% endif %}>{{ cat.name }}</option>
+              {% endfor %}
+          </select>
+            <div class="sizes">
+              <h6>Sizes</h6>
+              <div>
+                <input
+                  type="checkbox"
+                  name="size"
+                  id="Baby "
+                  value="Baby Size"
+                  {% if "Baby Size" in size_filter %} checked {% endif %}
+                />
+                <label for="Baby "> Baby Size </label>
+              </div>    
+              <div>
+                <input type="checkbox" name="size" id="Small" value="Small" 
+                {% if "Small" in size_filter %} checked {% endif %}
+                />
+                <label for="Small"> Small </label>
+              </div>
+              <div>
+                <input type="checkbox" name="size" id="Mediu" value="Medium" 
+                {% if "Medium" in size_filter %} checked {% endif %}
+                />
+                <label for="Mediu"> Medium </label>
+              </div>
+              <div>
+                <input type="checkbox" name="size" id="Large" value="Large" 
+                {% if "Large" in size_filter %} checked {% endif %}
+                />
+                <label for="Large"> Large </label>
+              </div>
+              <div>
+                <input type="checkbox" name="size" id="X-Lar" value="X-Large"
+                {% if "X-Large" in size_filter %} checked {% endif %}
+                />
+                <label for="X-Lar"> X-Large </label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  name="size"
+                  id="XX-La"
+                  value="XX-Large"
+                  {% if "XX-Large" in size_filter %} checked {% endif %}
+                />
+                <label for="XX-La"> XX-Large </label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  name="size"
+                  id="XXX-L"
+                  value="XXX-Large"
+                  {% if "XXX-Large" in size_filter %} checked {% endif %}
+                />
+                <label for="XXX-L"> XXX-Large </label>
+              </div>
+            </div>
+            <div class="filter-option">
+              <div>
+                <span>&#8358;</span>
+                <input
+                  type="price"
+                  id="price-filter"
+                  min="0"
+                  max="100"
+                  value="{% if min_price_filter %}{{min_price_filter}}{% else %}0{% endif %}"
+                />
+              </div>
+              -
+              <div>
+                <span>&#8358;</span>
+                <input
+                  type="price"
+                  id="price-filter"
+                  min="0"
+                  max="100"
+                  value="{% if max_price_filter %}{{ max_price_filter }}{% else %}10000{% endif %}"
+                  name="max-price"
+                />
+              </div>
+            </div>
+            <button type="submit" class="btn">Filter</button>
+          </form>
+        </div>
+        <div>
+          <h3>Categories</h3>
+          <hr />
+          <ul>
+            {% for cat in category %}
+            <li>
+              <a href="{% url 'category' cat.name %}">
+                <p>
+                  <span class="name">{{cat.name}}</span>
+                  <span class="quantity">{{cat.count}}</span>
+                </p>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="setting">
+          <h3>Settings</h3>
+          <hr />
+          <ul>
+            {% if user.is_authenticated %}
+            <li>
+              <a href="{% url 'view_cart' %}">
+                <p>
+                  <span>Cart</span>
+                  <span><i class="fa fa-shopping-cart"></i></span>
+                </p>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'payment_history' %}">
+                <p>
+                  <span>Payment History</span>
+                  <span><i class="fa fa-history"></i></span>
+                </p>
+              </a>
+            </li>
+            {% if user.is_staff %}
+            <li>
+              <a href="{% url 'add-product' %}">
+                <p>
+                  <span>Add Product</span>
+                  <span><i class="fa fa-add"></i></span>
+                </p>
+              </a>
+            </li>
+            {% endif %}
+            <li>
+              <a href="{% url 'profile' user.uid %}">
+                <p>
+                  <span>Profile</span>
+                  <span><i class="fa fa-user-circle-o"></i></span>
+                </p>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'logout' %}">
+                <p>
+                  <span>Logout</span>
+                  <span><i class="fa fa-sign-out"></i></span>
+                </p>
+              </a>
+            </li>
+            {% else %}
+            <li>
+              <a href="{% url 'login' %}">
+                <p>
+                <span>Login</span>
+                <span><i class="fa fa-sign-in"></i></span>
+              </p>
+            </a>
+            </li>
+            <li>
+              <a href="{% url 'register' %}">
+                <p>
+                <span>Register</span>
+                <span><i class="fa fa-pencil"></i></span>
+              </p>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </aside>
+      <div class="overlay"></div>
+      <script>
+         document.addEventListener("DOMContentLoaded", function() {
+  var sideMenu = document.querySelector(".side-menu");
+  var menuToggle = document.querySelector(".menu-toggle");
+  var overlay = document.querySelector(".overlay");
+
+  menuToggle.addEventListener("click", function() {
+    sideMenu.classList.toggle("open");
+    overlay.classList.toggle("show");
+    menuToggle.classList.toggle("open");
+  });
+});
+      </script>
+      <main>
+        <div>
+          {% block main %} {% endblock main %}
+        </div>
+      </main>
+    </div>
+    <footer>
+      <hr />
+      <div>
+        <p>&copy; Layers of Truth. All Rights Reserved</p>
+        <ul class="items">
+          <li><a href="{% url 'about' %}">About Us</a></li>
+          <li><a href="{% url 'contact' %}">Contact Us</a></li>
+          <li><a href="/#">Back to Homepage</a></li>
+        </ul>
+      </div>
+    </footer>
+    <script src="{% static 'home/js/script.js' %}"></script>
+  </body>
+</html>

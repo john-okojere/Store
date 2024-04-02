@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block main %}
+<form action="" method="post" id="myForm" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        {{form | crispy }}
+    </div>
+    <div class="for">
+        <input type="submit" class="btn  px-2" value="Add Product" style="align-self: center;color: white;padding:0 20px; background:var(--primary-color)">
+    </div>
+</form>
+{% endblock main %}
