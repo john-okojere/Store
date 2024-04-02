@@ -3,5 +3,4 @@ Django
 pytz
 sqlparse
 gunicorn
-psycopg2
 requests 
