@@ -59,6 +59,22 @@ def add_product(request):
     
     return render(request, 'home/add_product.html', {'form': form})
 
+@login_required
+def edit_product(request, uid):
+    product  = Product.objects.get(uid = uid)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.user = request.user
+            form.save()
+            return redirect('/')
+    else:
+        form = ProductForm()
+    
+    return render(request, 'home/add_product.html', {'form': form})
+
+
 def filter_items(request):
     if request.method == 'POST':
         category_id = request.POST.get('category-filter')

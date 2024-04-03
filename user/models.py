@@ -58,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.last_name} {self.first_name}'
+        return str(self.last_name + " " +self.first_name)
 
 class About(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, related_name="aboutprofile")
