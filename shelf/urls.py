@@ -6,9 +6,9 @@ urlpatterns = [
     path("about",views.about , name="about"),
     path("contact",views.contact , name="contact"),
     path("details/<uuid:uid>",views.details , name="details"),
-    
+
     path("add-product", views.add_product, name="add-product"),
-    path("edit-product", views.edit_product, name="edit-product"),
+    path("edit-product/<uuid:uid>", views.edit_product, name="edit-product"),
 
     path('filter/', views.filter_items, name='filter_items'),
     
