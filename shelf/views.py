@@ -70,7 +70,7 @@ def edit_product(request, uid):
             form.save()
             return redirect('/')
     else:
-        form = ProductForm()
+        form = ProductForm(instance=product)
     
     return render(request, 'home/add_product.html', {'form': form})
 
