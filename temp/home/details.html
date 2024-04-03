@@ -44,8 +44,13 @@
         </form>
         <p>
         {{product.description}}
-        <a href="{% url 'edit-product' %}" class="btn"> Edit Product</a>
         </p>
+        {% if user.is_authenticated %}
+        {% if user.is_staff %}
+        <a href="{% url 'edit-product' product.uid %}" class="btn"> Edit Product</a>
+        {% endif %}
+          
+        {% endif %}
         <!-- <a href="#" class="btn">Buy Now</a> -->
     </div>
 </section>
