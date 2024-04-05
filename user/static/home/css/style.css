@@ -81,11 +81,11 @@ nav h1 img{
 nav h1 span{
     text-transform: uppercase;
 }
-nav, nav .items ul, footer div, footer div ul{
+nav, nav .items ul, footer > div, footer div ul{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
     list-style: none;
 }
 nav .search{
@@ -152,7 +152,7 @@ nav .search input[type=submit]{
 background: #cdab4b;
 }
 nav .search input[type=text]{
-    min-width: 400px;
+    min-width: 300px;
 }
 footer, footer >div{
     padding:1rem;
@@ -167,7 +167,7 @@ main{
     gap: 1rem;
     padding: 0 2%;
 }
-aside{
+aside, .logo-side{
     padding:0rem 1rem 2rem 0rem;
     min-width: 300px;
     width: 20%;

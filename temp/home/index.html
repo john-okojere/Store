@@ -49,21 +49,24 @@
 </style>
 
 <div class="carousel">
-    <div class="slides">
+    <div class="slides one">
         <div class="slide">
-            <img src="{% static 'home/img/Ad banner 1 .png' %}" alt="Banner 1">
+            <img src="{% static 'home/img/6.png' %}" alt="Banner 1">
         </div>
         <div class="slide">
-            <img src="{% static 'home/img/Ad banner 2 .png' %}" alt="Banner 2">
+            <img src="{% static 'home/img/3.png' %}" alt="Banner 1">
+        </div>
+        <div class="slide">
+            <img src="{% static 'home/img/2.png' %}" alt="Banner 1">
         </div>
     </div>
-    <div class="indicators"></div>
+    <div class="indicators one"></div>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-    var slides = document.querySelectorAll(".slide");
-    var indicatorsContainer = document.querySelector(".indicators");
+    var slides = document.querySelectorAll(".one .slide");
+    var indicatorsContainer = document.querySelector(".indicators.one");
     var currentSlide = 0;
 
     // Show the first slide initially
@@ -111,16 +114,16 @@
     </div>
 {% endif %}
 <section class="items">
-    {% for product in products %}
+    {% for product in products|slice:"4" %}
     <div class="item">
         <div class="rect">
             <a href="{% url 'details' product.uid %}">
-                <div style="min-height: 200px;width: 100%;height: 100%;background: url({{product.image.url}});background-position: center;background-repeat: no-repeat;background-size: cover;"></div>
+                <div style="min-height: 250px;width: 100%;height: 100%;background: url({{product.image.url}});background-position: center;background-repeat: no-repeat;background-size: cover;"></div>
             </a>
         </div>
-        <div class="info">
+        <div class="info" style="height: 70px;overflow: hidden;gap: 10px;">
             <p>
-                <span class="title"> {{product.name | title}}</span>
+                <span class="title"> {{product.name | title | truncatewords:4}}</span>
                 <span class="price">{{product.size}} - &#8358; {{product.price}}</span>
             </p>
             <p>
@@ -130,4 +133,87 @@
     </div>
     {% endfor %}  
 </section>
+<br>
+<div class="carousel">
+    <div class="slides two">
+        <div class="slide">
+            <img src="{% static '3x1/1.png' %}" alt="Banner 1">
+        </div>
+        <div class="slide">
+            <img src="{% static '3x1/2.png' %}" alt="Banner 1">
+        </div>
+        <div class="slide">
+            <img src="{% static '3x1/3.png' %}" alt="Banner 1">
+        </div>
+    </div>
+    <div class="indicators two"></div>
+</div>
+<br>
+<section class="items">
+    {% for product in products %}
+    {% if forloop.counter >= 5 and forloop.counter <= 8 %}
+    <div class="item">
+        <div class="rect">
+            <a href="{% url 'details' product.uid %}">
+                <div style="min-height: 250px;width: 100%;height: 100%;background: url({{product.image.url}});background-position: center;background-repeat: no-repeat;background-size: cover;"></div>
+            </a>
+        </div>
+        <div class="info" style="height: 70px;overflow: hidden;gap: 10px;">
+            <p>
+                <span class="title"> {{product.name | title | truncatewords:4}}</span>
+                <span class="price">{{product.size}} - &#8358; {{product.price}}</span>
+            </p>
+            <p>
+                <a href="{% url 'details' product.uid %}"><span><i class="fa fa-cart-plus"></i></span></a>
+            </p>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}  
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var slides2 = document.querySelectorAll(".slides.two .slide");
+    var indicatorsContainer2 = document.querySelector(".indicators.two");
+    var currentSlide2 = 0;
+
+    // Show the first slide initially
+    slides2[currentSlide2].classList.add("active");
+
+    // Function to move to the next slide
+    function nextSlide2() {
+        slides2[currentSlide2].classList.remove("active");
+        indicators2[currentSlide2].classList.remove("active-indicator");
+        currentSlide2 = (currentSlide2 + 1) % slides2.length;
+        slides2[currentSlide2].classList.add("active");
+        indicators2[currentSlide2].classList.add("active-indicator");
+    }
+
+    // Automatically move to the next slide every 5 seconds
+    setInterval(nextSlide2, 5000);
+
+    // Create indicators
+    var indicators2 = [];
+    for (var i = 0; i < slides2.length; i++) {
+        var indicator2 = document.createElement("div");
+        indicator2.classList.add("indicator");
+        if (i === currentSlide2) {
+            indicator2.classList.add("active-indicator");
+        }
+        indicators2.push(indicator2);
+        indicatorsContainer2.appendChild(indicator2);
+    }
+
+    // Add click event listeners to indicators
+    indicators2.forEach(function(indicator, index) {
+        indicator2.addEventListener("click", function() {
+            slides2[currentSlide2].classList.remove("active");
+            indicators2[currentSlide2].classList.remove("active-indicator");
+            currentSlide2 = index;
+            slides2[currentSlide2].classList.add("active");
+            indicators2[currentSlide2].classList.add("active-indicator");
+        });
+    });
+});
+</script>
 {% endblock main %}
