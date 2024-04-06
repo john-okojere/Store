@@ -151,7 +151,7 @@
 <br>
 <section class="items">
     {% for product in products %}
-    {% if forloop.counter >= 5 and forloop.counter <= 8 %}
+    {% if forloop.counter >= 5 and forloop.counter <= 12 %}
     <div class="item">
         <div class="rect">
             <a href="{% url 'details' product.uid %}">
@@ -190,7 +190,7 @@
     }
 
     // Automatically move to the next slide every 5 seconds
-    setInterval(nextSlide2, 5000);
+    setInterval(nextSlide2, 7000);
 
     // Create indicators
     var indicators2 = [];
@@ -212,6 +212,89 @@
             currentSlide2 = index;
             slides2[currentSlide2].classList.add("active");
             indicators2[currentSlide2].classList.add("active-indicator");
+        });
+    });
+});
+</script>
+<br>
+<div class="carousel">
+    <div class="slides three">
+        <div class="slide">
+            <img src="{% static 'gif/4.gif' %}" alt="Banner 1">
+        </div>
+        <div class="slide">
+            <img src="{% static 'gif/5.gif' %}" alt="Banner 1">
+        </div>
+        <div class="slide">
+            <img src="{% static 'gif/6.gif' %}" alt="Banner 1">
+        </div>
+    </div>
+    <div class="indicators three"></div>
+</div>
+<br>
+<section class="items">
+    {% for product in products %}
+    {% if forloop.counter >= 13 %}
+    <div class="item">
+        <div class="rect">
+            <a href="{% url 'details' product.uid %}">
+                <div style="min-height: 250px;width: 100%;height: 100%;background: url({{product.image.url}});background-position: center;background-repeat: no-repeat;background-size: cover;"></div>
+            </a>
+        </div>
+        <div class="info" style="height: 70px;overflow: hidden;gap: 10px;">
+            <p>
+                <span class="title"> {{product.name | title | truncatewords:4}}</span>
+                <span class="price">{{product.size}} - &#8358; {{product.price}}</span>
+            </p>
+            <p>
+                <a href="{% url 'details' product.uid %}"><span><i class="fa fa-cart-plus"></i></span></a>
+            </p>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}  
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var slides3 = document.querySelectorAll(".slides.three .slide");
+    var indicatorsContainer3 = document.querySelector(".indicators.three");
+    var currentSlide3 = 0;
+
+    // Show the first slide initially
+    slides3[currentSlide3].classList.add("active");
+
+    // Function to move to the next slide
+    function nextSlide3() {
+        slides3[currentSlide3].classList.remove("active");
+        indicators3[currentSlide3].classList.remove("active-indicator");
+        currentSlide3 = (currentSlide3 + 1) % slides3.length;
+        slides3[currentSlide3].classList.add("active");
+        indicators3[currentSlide3].classList.add("active-indicator");
+    }
+
+    // Automatically move to the next slide every 5 seconds
+    setInterval(nextSlide3, 5000);
+
+    // Create indicators
+    var indicators3 = [];
+    for (var i = 0; i < slides3.length; i++) {
+        var indicator3 = document.createElement("div");
+        indicator3.classList.add("indicator");
+        if (i === currentSlide3) {
+            indicator3.classList.add("active-indicator");
+        }
+        indicators3.push(indicator3);
+        indicatorsContainer3.appendChild(indicator3);
+    }
+
+    // Add click event listeners to indicators
+    indicators3.forEach(function(indicator, index) {
+        indicator3.addEventListener("click", function() {
+            slides3[currentSlide3].classList.remove("active");
+            indicators3[currentSlide3].classList.remove("active-indicator");
+            currentSlide3 = index;
+            slides3[currentSlide3].classList.add("active");
+            indicators3[currentSlide3].classList.add("active-indicator");
         });
     });
 });

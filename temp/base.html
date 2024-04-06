@@ -362,16 +362,16 @@ document.addEventListener("DOMContentLoaded", function() {
       <div class="overlay"></div>
       <script>
          document.addEventListener("DOMContentLoaded", function() {
-  var sideMenu = document.querySelector(".side-menu");
-  var menuToggle = document.querySelector(".menu-toggle");
-  var overlay = document.querySelector(".overlay");
+          var sideMenu = document.querySelector(".side-menu");
+          var menuToggle = document.querySelector(".menu-toggle");
+          var overlay = document.querySelector(".overlay");
 
-  menuToggle.addEventListener("click", function() {
-    sideMenu.classList.toggle("open");
-    overlay.classList.toggle("show");
-    menuToggle.classList.toggle("open");
-  });
-});
+          menuToggle.addEventListener("click", function() {
+            sideMenu.classList.toggle("open");
+            overlay.classList.toggle("show");
+            menuToggle.classList.toggle("open");
+          });
+        });
       </script>
       <main>
         <div>
@@ -408,6 +408,29 @@ document.addEventListener("DOMContentLoaded", function() {
      
     
     </footer>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+    // Get the <aside> element
+    var aside = document.querySelector('aside');
+    
+    // Add a scroll event listener to the aside tag
+    aside.addEventListener('scroll', function() {
+        // Get the scroll position of the aside
+        var scrollTop = aside.scrollTop;
+        var scrollHeight = aside.scrollHeight;
+        var clientHeight = aside.clientHeight;
+        
+        // Check if aside has reached the bottom
+        if (scrollTop + clientHeight >= scrollHeight) {
+            // Disable scrolling for aside
+            aside.style.overflowY = 'hidden';
+        } else {
+            // Enable scrolling for aside
+            aside.style.overflowY = 'auto';
+        }
+    });
+});
+  </script>
     <script src="{% static 'home/js/script.js' %}"></script>
   </body>
 </html>
