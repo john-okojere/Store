@@ -39,7 +39,7 @@
                 <th>Image</th>
                 <th>Product</th>
                 <th>Price</th>
-                <th>Size</th>
+                <th>Info</th>
                 <th>Quantity</th>
                 <th>Total</th>
                 <th>Update Quantity</th>
@@ -52,7 +52,7 @@
                 <td><img src="{{cart_item.product.image.url}}" style="width: 50px;" alt=""></td>
                 <td><a href="{% url 'details' cart_item.product.uid %}">{{ cart_item.product.name }}</a></td>
                 <td>&#8358;{{ cart_item.product.price }}</td>
-                <td class="quantity">{{ cart_item.product.size }}</td>
+                <td class="quantity">{{ cart_item.info }}</td>
                 <td class="quantity">{{ cart_item.quantity }}</td>
                 <td class="subtotal">&#8358;{{ cart_item.subtotal }}</td>
                 <td>

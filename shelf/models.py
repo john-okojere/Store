@@ -9,7 +9,14 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-Sizes = (
+class Sizes(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    created_date = models.DateTimeField(auto_now=True, null=True)
+    
+    def __str__(self):
+        return self.name
+
+Size = (
     ('Baby Size', 'Baby Size'),
     ('Small', 'Small'),
     ('Medium', 'Medium'),
@@ -25,7 +32,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='product/%y/%m/%d/')
     categories = models.ManyToManyField(Category)
-    size = models.CharField(choices=Sizes, max_length=255)
+    size = models.ManyToManyField(Sizes)
     price = models.IntegerField()
     stock = models.IntegerField(verbose_name="number of Stock")
     description = models.TextField()

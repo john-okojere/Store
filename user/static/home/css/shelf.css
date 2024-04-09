@@ -12,7 +12,7 @@ main section.items{
 main .item .info{
     display: flex;
     justify-content: space-between;
-    padding:0.5rem 1rem ;
+    padding:0rem 1rem ;
 }
 main .item .info p{
     display:flex;

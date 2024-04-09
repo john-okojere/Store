@@ -7,5 +7,5 @@ class ProductForm(forms.ModelForm):
         fields = ['name', 'image', 'categories', 'price', 'size', 'stock', 'description']
         widgets = {
             'categories': forms.CheckboxSelectMultiple,
-            'size': forms.RadioSelect
+            'size': forms.CheckboxSelectMultiple
         }

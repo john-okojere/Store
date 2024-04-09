@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from shelf.models import Product
+from shelf.models import Product, Sizes
 from .models import Cart, CartItem, Payment, Order
 from .forms import AddToCartForm, UpdateCartItemForm
 
@@ -15,10 +15,18 @@ def add_to_cart(request, product_uid):
         form = AddToCartForm(request.POST, product=product)
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
-            cart, created = Cart.objects.get_or_create(user=request.user, cleared= False)
-            cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+            info = form.cleaned_data['info'] # Handle case where 'info' is not provided
+            sizes_selected = [key.split('_')[1] for key, value in form.cleaned_data.items() if key.startswith('size_') and value]
+            if len(sizes_selected) > 1 and quantity == 1:
+                return JsonResponse({'success': False, 'errors': 'You cannot select more than one size if the quantity is one.'}, status=400)
+            
+            cart, created = Cart.objects.get_or_create(user=request.user, cleared=False)
+            cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product, info=info)
             cart_item.quantity += quantity
             cart_item.save()
+            cart_item.size.set(Sizes.objects.filter(id__in=sizes_selected))
+            print(info)  # Assign selected sizes to the cart item
+            print(form.cleaned_data.items())  # Assign selected sizes to the cart item
             return JsonResponse({'success': True, 'message': 'Product added to cart successfully.'})
         else:
             return JsonResponse({'success': False, 'errors': form.errors}, status=400)
@@ -44,7 +52,7 @@ def update_cart_item(request, cart_item_uid):
             return redirect('view_cart')
     else:
         form = UpdateCartItemForm(instance=cart_item)
-    return render(request, 'update_cart_item.html', {'form': form, 'cart_item': cart_item})
+    return render(request, 'cart/view_cart.html', {'form': form, 'cart/cart_item': cart_item})
 
 from .models import Payment
 from django.conf import settings

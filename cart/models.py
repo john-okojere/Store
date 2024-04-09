@@ -1,7 +1,7 @@
 from django.db import models
 import uuid
 from user.models import User
-from shelf.models import Product
+from shelf.models import Product, Sizes
 import secrets
 import random
 import string
@@ -32,6 +32,8 @@ class CartItem(models.Model):
     uid = models.UUIDField( default=uuid.uuid4, editable=False)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    size = models.ManyToManyField(Sizes)
+    info = models.TextField( null=True, blank=True)
     quantity = models.PositiveIntegerField( default=0)
     created_date = models.DateTimeField(auto_now=True, null=True)
 
