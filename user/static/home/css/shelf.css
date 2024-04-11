@@ -7,12 +7,11 @@ main section.items{
     display: grid;
     grid-template-columns: 24% 24% 24% 24%;
     gap:1rem ;
-    padding-top: 1rem;
 }
 main .item .info{
     display: flex;
     justify-content: space-between;
-    padding:0rem 1rem ;
+    padding:0.7rem 1rem ;
 }
 main .item .info p{
     display:flex;

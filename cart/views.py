@@ -33,6 +33,17 @@ def add_to_cart(request, product_uid):
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
 
+
+@login_required
+def delete_from_cart(request, cart_item_uid):
+    try:
+        cart_item = CartItem.objects.get(uid=cart_item_uid)
+        cart_item.delete()
+        return redirect('cart_view')  # Redirect to the cart view after deleting the item
+    except CartItem.DoesNotExist:
+        # If the cart item does not exist, return to the cart view with an error message
+        return redirect('view_cart')
+
 @login_required
 def view_cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user, cleared= False)
