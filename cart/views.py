@@ -37,7 +37,7 @@ def add_to_cart(request, product_uid):
 @login_required
 def delete_from_cart(request, cart_item_uid):
     try:
-        cart_item = CartItem.objects.get(uid=cart_item_uid)
+        cart_item = get_object_or_404(CartItem, uid=cart_item_uid)
         cart_item.delete()
         return redirect('cart_view')  # Redirect to the cart view after deleting the item
     except CartItem.DoesNotExist:
