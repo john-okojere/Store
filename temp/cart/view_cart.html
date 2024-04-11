@@ -60,7 +60,7 @@
                         {% csrf_token %}
                         <input type="number" name="quantity" value="{{ cart_item.quantity }}" min="1" required>
                         <button type="submit">Update</button>
-                        <a href="{% url 'delete_from_cart' cart_item.product.uid  %}">Delete</a>
+                        <a href="{% url 'delete_from_cart' cart_item.uid  %}">Delete</a>
                     </form>
                 </td>
             </tr>
