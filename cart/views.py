@@ -131,6 +131,7 @@ def sm(request):
 
 def verify_payment(request, ref):
     payment = Payment.objects.get(ref=ref)
+    cart = payment.cart
     cart_items = payment.cart.cartitem_set.all()
     total = sum(item.subtotal() for item in cart_items)
     order = Order.objects.filter(payment=payment)
