@@ -39,7 +39,7 @@ def delete_from_cart(request, cart_item_uid):
     try:
         cart_item = get_object_or_404(CartItem, uid=cart_item_uid)
         cart_item.delete()
-        return redirect('cart_view')  # Redirect to the cart view after deleting the item
+        return redirect('view_cart')  # Redirect to the cart view after deleting the item
     except CartItem.DoesNotExist:
         # If the cart item does not exist, return to the cart view with an error message
         return redirect('view_cart')
