@@ -81,7 +81,7 @@ nav h1 img{
 nav h1 span{
     text-transform: uppercase;
 }
-nav, nav .items ul, footer > div, footer div ul{
+nav, nav .items ul, footer > div, footer div > ul{
     display: flex;
     justify-content: space-between;
     align-items: center;

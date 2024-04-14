@@ -127,6 +127,13 @@ def sm(request):
  
     return redirect('/')
        
+def viewpayment(request, ref):
+    payment = Payment.objects.get(ref=ref)
+    cart = payment.cart
+    cart_items = payment.cart.cartitem_set.all()
+    total = sum(item.subtotal() for item in cart_items)
+    order = Order.objects.filter(payment=payment)
+    return render(request, "success.html",  {'cart_items': cart_items, 'total': total,'cart': cart,'payment': payment,'order':order})            
 
 
 def verify_payment(request, ref):
@@ -168,7 +175,10 @@ def verify_payment(request, ref):
 
 
 def payment_history(request):
-    payment = Payment.objects.filter(verified = True)
+    if request.user.is_staff: 
+        payment = Payment.objects.filter(verified = True)
+    else:
+        payment = Payment.objects.filter(verified = True, user = request.user)
     return render(request, "payment_history.html", {'payments': payment,})
 
 def sent_order(request, ref):

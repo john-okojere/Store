@@ -19,7 +19,7 @@
                     {% for payment in payments %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td><a href="{% url 'verify_payment' payment.ref %}">{{ payment.ref }}</a></td>
+                        <td><a href="{% url 'payment_view' payment.ref %}">{{ payment.ref }}</a></td>
                         <td>&#8358;{{ payment.amount }}</td>
                         <td>{{ payment.date_created }}</td>
                         <td>{% if payment.verified %} Verified {% else %} Pending {% endif %}</td>

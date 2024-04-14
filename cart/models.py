@@ -37,6 +37,11 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField( default=0)
     created_date = models.DateTimeField(auto_now=True, null=True)
 
+    def save(self, *args, **kwargs):
+        if self.product.productType == "Single Buy":
+            self.quantity = 1
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in {self.cart}"
 

@@ -37,6 +37,7 @@
             <th>Image</th>
             <th>Product</th>
             <th>Quantity</th>
+            <th>Info</th>
             <th>Total</th>
         </tr>
     </thead>
@@ -47,6 +48,7 @@
             <td><img src="{{cart_item.product.image.url}}" style="width: 50px;" alt=""></td>
             <td><a href="{% url 'details' cart_item.product.uid %}">{{ cart_item.product.name }}</a></td>
             <td class="quantity">{{ cart_item.quantity }}</td>
+            <td class="quantity">{{ cart_item.info }}</td>
             <td class="subtotal">&#8358;{{ cart_item.subtotal }}</td>
         </tr>
         {% endfor %}
@@ -57,6 +59,30 @@
     </tbody>
 </table>
 
+<table>
+    <tbody>
+        <tr>
+            <th>Full Name</th>
+            <td>{{payment.full_name}}</td>
+        </tr>
+        <tr>
+            <th>Address</th>
+            <td>{{payment.address}}</td>
+        </tr>
+        <tr>
+            <th>City</th>
+            <td>{{payment.city}}</td>
+        </tr>
+        <tr>
+            <th>State</th>
+            <td>{{payment.state}}</td>
+        </tr>
+        <tr>
+            <th>Phone Number</th>
+            <td>{{payment.phone_number}}</td>
+        </tr>
+    </tbody>
+</table>
 
 {% if user.is_staff %}
     {% if order %}

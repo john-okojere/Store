@@ -28,10 +28,12 @@
     </div>
     <div class="info">
         <h1>{{product.name | upper }}</h1>
-        <p> &#8358; {{product.price}}</p>
-        <p>{{product.stock}} in stock</p>
         <table>
             <tbody>
+                <tr>
+                    <th>Price</th>
+                    <td>&#8358; {{product.price}}</td>
+                </tr>
                 <tr>
                     <th style="place-content: start;">Sizes: </th>
                     <td>
@@ -40,10 +42,26 @@
                         {% endfor %}
                     </td>
                 </tr>
-        </tbody>
-        </table>
-        <table>
-            <tbody>
+                <tr>
+                    <th>Delivery</th>
+                    <td>{{ product.delivery | title }}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>{{ product.productType | title }}</td>
+                </tr>
+                <tr>
+                    <th>Min. Buy</th>
+                    <td>{{ product.minBuy | title }}</td>
+                </tr>
+                <tr>
+                    <th>Avail. Stock</th>
+                    <td>{{product.stock}} </td>
+                </tr>
+                <tr>
+                    <th>Payment</th>
+                    <td>{{ product.pay | title }}</td>
+                </tr>
                 <tr>
                     <th style="place-content: start;padding-top:10px ;">Categories: </th>
                     <td>
@@ -55,46 +73,66 @@
             </tbody>
         </table>
         <div>
-                <fieldset>
-                    <legend><strong>Description</strong></legend>
-                    <p>{{product.description|linebreaks }}</p>
-                </fieldset>
+               <style>
+                td{
+                    margin: 5px;
+                    display: block;
+                }
+                form#add-to-cart-form input{
+                    height: 40px;
+                    padding:5px;
+                }
+               </style>
         </div>
-        <hr>
-        <h5>Add to Cart</h5>
-        <form id="add-to-cart-form" method="post" style="gap: 0;flex-direction: column;">
-            {% csrf_token %}
-            <div style="display: flex;gap: 10px;align-items: center;">
-                <div>
-                    Quantity
-                </div>
-                <div>
-                    <input type="number" style="width: 50px;" id="id_quantity" name="quantity" min="1" value="1" required>
-                </div>
-            </div>
-            
-            <div>
-            <input type="textarea" id="info" style="width: 100%;" placeholder="Enter Extra information" name="info">
-            <br>
-            </div>
-            {% if user.is_authenticated %}
-            <div style="text-align: center;margin:0 10px;">
-            <input type="submit" style="border-radius: 0;text-align: center;margin-top: 0.5rem;" class="btn" value="Add to Cart">
-            </div>
-            {% else %}
-            <a href="/account/Login/?next={% url 'details' product.uid %}" class="btn"> Add to Cart </a>
-            {% endif %}
-        </form>
-        <hr>
-        {% if user.is_authenticated %}
-        {% if user.is_staff %}
-        <a href="{% url 'edit-product' product.uid %}" class="btn"> Edit Product</a>
-        {% endif %}
-          
-        {% endif %}
         <!-- <a href="#" class="btn">Buy Now</a> -->
     </div>
+    </section>
+
+<section>
+    <fieldset>
+        <legend><strong>Description</strong></legend>
+        <p>{{product.description|linebreaks }}</p>
+    </fieldset>
 </section>
+</section>
+<section>
+    <hr>
+        <form id="add-to-cart-form" method="post" style="gap: 0;flex-direction: column;">
+            {% csrf_token %}
+            <div style="display: flex;align-items:center;gap: 10px;">
+                <div style="display: flex;gap: 10px;align-items: center;flex-wrap: wrap;">
+                    <div>
+                        <h5>Add to Cart</h5>
+                    </div>
+                    <div>
+                        <input type="number" style="width: 50px;" id="id_quantity" name="quantity" min="1" value="1" required>
+                    </div>
+                </div>
+                
+                <div>
+                <input type="textarea" id="info" style="width: 100%;" placeholder="Enter Extra information" name="info">
+                </div>
+                {% if user.is_authenticated %}
+                <div style="text-align: center;margin:0 10px;height: 100%;">
+                <input type="submit" style="border-radius: 0;text-align: center;" class="btn" value="Add to Cart">
+                </div>
+                {% else %}
+                <a href="/account/Login/?next={% url 'details' product.uid %}" class="btn"> Add to Cart </a>
+                {% endif %}
+            </div>
+        </form>
+        <hr>
+</section>
+<br>
+
+{% if user.is_authenticated %}
+{% if user.is_staff %}
+<a href="{% url 'edit-product' product.uid %}" class="btn"> Edit Product</a>
+{% endif %}
+<br>  
+{% endif %}
+<br> <br>
+
 <h2>Related Products</h2>
 <section class="items">
     {% for product in products %}

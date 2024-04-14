@@ -11,6 +11,7 @@ urlpatterns = [
 	path('initiate-payment/', views.initiate_payment, name='initiate_payment'),
 	path('payment/<str:ref>/', views.verify_payment, name='verify_payment'),
 
+	path('payment-view/<str:ref>/', views.viewpayment, name='payment_view'),
 	path('payment-history/', views.payment_history, name='payment_history'),
 
 	path('Delivery-Sent/', views.sent_order, name='sent_order'),

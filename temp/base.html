@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOT Store | Online Shopping for Faith-Inspired Apparel - Embrace His Grace, Wear His Love</title>
+    <title>{% block title %} {% endblock title %}  LOT Store | Online Shopping for Faith-Inspired Apparel - Embrace His Grace, Wear His Love</title>
     <meta name="description" content="Explore a wide range of products at LOT Store, the official online store of Layers of Truth Church. Shop for books, merchandise, and more.">
     <meta name="keywords" content="LOT Store, Layers of Truth Church, religious books, merchandise, online store">
     <meta name="author" content="Layers of Truth Church">
@@ -379,19 +379,83 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
       </main>
     </div>
+<section>
+  <style>
+    .whatsapp-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #008751;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 20% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  color: #000;
+}
+
+.close {
+  color: #000;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+footer > div{
+  align-items: start;
+}
+  </style>
+  <div id="whatsapp-button" class="whatsapp-button">
+    <span><h1 style="margin-bottom: 0;"><a href="https://w.app/LOTSTORE" target="_blank"><i class="fa fa-whatsapp"></a></i></h1></span>
+  </div>
+  
+</section>
+<style>
+  footer div ul {
+    align-items: start;
+    gap: 2rem;
+    list-style: none;
+  }
+  .items strong{
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+</style>
     <footer>
       <hr />
       <div>
-        <p>&copy; Layers of Truth. All Rights Reserved</p>
-        <ul class="items">
-          <li><a href="{% url 'about' %}">About Us</a></li>
-          <li><a href="{% url 'contact' %}">Contact Us</a></li>
-          <li><a href="/#">Back to Homepage</a></li>
-        </ul>
-      </div>
-      <div>
-        <div>
-          <h6>JOIN OUR COMMUNITY</h6>
+        <div style="display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;gap: 2rem;align-items: center;">
+          <div>
+        <a href="/"><img src="{% static 'home/img/logo/3.png' %}" alt="" style="width: 200px;"></a><br>
+            <sub>Embrace Your Faith, Wear Your Belief.</sub>
+          </div>
+          <div>
+            <h6>JOIN OUR COMMUNITY</h6>
           <ul class="items">
             <li><a href="https://www.facebook.com/people/Lotstore/61558265454027/"><i class="fa fa-facebook-official"></i></a></li>
             <li><a href="https://www.facebook.com/people/Lotstore/61558265454027/"><i class="fa fa-instagram"></i></a></li>
@@ -399,16 +463,50 @@ document.addEventListener("DOMContentLoaded", function() {
             <li><a href="https://www.facebook.com/people/Lotstore/61558265454027/"><i class="fa fa-linkedin"></i></a></li>
             <li><a href="https://www.facebook.com/people/Lotstore/61558265454027/"><i class="fa fa-youtube"></i></a></li>
           </ul>
+          </div>
         </div>
-        <div>
-          <h6>PAYMENT METHODS</h6>
-          <ul class="items">
-            <li><i class="fa fa-cc-visa"></i></li>
-            <li><i class="fa fa-money-bill-transfer"></i></li>
-            <li><i class="fa fa-cc-mastercard"></i></li>
-          </ul>
-        </div>
+        <ul style="flex-wrap: wrap;">
+          <li class="items">
+                <strong>PAYMENT METHODS</strong>
+              <br><br>
+              <ul class="items">
+                  <li>Pay On Delivery</li>
+                  <li>Bank Transfer</li>
+                  <li>Visa Card</li>
+                  <li>Mastercard</li>
+                  <li>Verve</li>
+                </ul>
+          </li>
+          <li class="items">
+            <strong>Need Help?</strong>
+            <br><br>
+            <ul>
+              <li><a href="{% url 'faq' %}">FAQs</a></li>
+              <li><a href="{% url 'contact' %}">Contact Us</a></li>
+              <li><a href="https://w.app/LOTSTORE" target="_blank">Chat Us on WhatsApp</a></li>
+            </ul>
+          </li>
+          <li class="items">
+            <strong>Policies</strong>
+            <br><br>
+            <ul>
+              <li><a href="{% url 'return-policy' %}">Return Policy</a></li>
+              <li><a href="{% url 'delivery-policy' %}">Delivery Policy</a></li>
+              <li><a href="{% url 'privacy-policy' %}">Privacy Policy</a></li>
+              <li><a href="{% url 'TermsCondition' %}">Terms & Condition</a></li>
+            </ul>
+          </li>
+          <li class="items">
+            <strong>Useful Links</strong>
+            <br><br>
+            <ul>
+              <li><a href="{% url 'about' %}">About Us</a></li>
+              <li><a href="/#">Back to Homepage</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
+      
      
     
     </footer>

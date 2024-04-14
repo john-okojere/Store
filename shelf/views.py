@@ -11,8 +11,25 @@ def homepage(request):
     products = Product.objects.all().order_by('-created_date')
     return render(request, 'home/index.html', {'products':products})
 
+def FAQ(request):
+    return render(request, 'home/faq.html')
+
 def about(request):
     return render(request, 'home/about.html')
+
+def returnPolicy(request):
+    return render(request, 'home/returnPolicy.html')
+
+def TermsCondition(request):
+    return render(request, 'home/TermsCondition.html')
+
+
+def privacyPolicy(request):
+    return render(request, 'home/PrivacyPolicy.html')
+
+def deliveryPolicy(request):
+    return render(request, 'home/delivery.html')
+
 
 def contact(request):
     if request.method == 'POST':
